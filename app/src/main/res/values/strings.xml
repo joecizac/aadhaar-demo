@@ -2,8 +2,8 @@
     <string name="app_name">AADHAAR-DEMO</string>
     <string name="name">Name</string>
     <string name="gender">Gender</string>
-    <string name="dob">D.O.B</string>
-    <string name="add1">Add1</string>
+    <string name="dob">DOB</string>
+    <string name="add1">Address</string>
     <string name="add2">Add2</string>
     <string name="profile">Profile</string>
     <string name="close">Close</string>

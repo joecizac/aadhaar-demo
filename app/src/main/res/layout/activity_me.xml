@@ -30,10 +30,11 @@
         android:layout_marginTop="20dp">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="right"
+            android:gravity="left"
             android:text="@string/name"
             android:textSize="16sp" />
 
@@ -54,12 +55,14 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="right"
+            android:gravity="left"
             android:text="@string/dob"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:id="@+id/textView" />
 
         <TextView
             android:id="@+id/tv_dob"
@@ -78,10 +81,11 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="right"
+            android:gravity="left"
             android:text="@string/gender"
             android:textSize="16sp" />
 
@@ -102,12 +106,14 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="right"
+            android:gravity="left"
             android:text="@string/add1"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:id="@+id/textView2" />
 
         <TextView
             android:id="@+id/tv_add1"
@@ -119,22 +125,23 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="right"
-            android:text="@string/add2"
-            android:textSize="16sp" />
+            android:gravity="left"
+            android:text="Pincode"
+            android:textSize="16sp"
+             />
 
         <TextView
-            android:id="@+id/tv_add2"
+            android:id="@+id/tv_pincode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -142,7 +149,6 @@
             android:textSize="16sp" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>
