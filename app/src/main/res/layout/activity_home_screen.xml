@@ -6,11 +6,12 @@
    >
    <RelativeLayout
        android:id="@+id/setImage"
+       android:visibility="gone"
        android:background="@drawable/home_home"
        android:layout_above="@+id/divider"
        android:layout_width="match_parent"
        android:layout_height="match_parent" />
-
+<include layout="@layout/activity_me" ></include>
     <LinearLayout
         android:id="@+id/ll_bottomBar"
         android:layout_width="match_parent"
@@ -29,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/iv_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/home" />
 
             <TextView
@@ -54,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/iv_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/health" />
 
             <TextView
@@ -99,8 +100,8 @@
 
             <ImageView
                 android:id="@+id/iv_social"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/social_home" />
 
             <TextView
@@ -124,8 +125,8 @@
 
             <ImageView
                 android:id="@+id/iv_me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/me" />
 
             <TextView
