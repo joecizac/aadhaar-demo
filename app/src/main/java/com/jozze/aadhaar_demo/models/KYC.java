@@ -14,6 +14,8 @@ public class KYC {
     private String aadhaarID;
     @SerializedName("aadhaar-reference-code")
     private String refCode;
+    @SerializedName("kyc")
+    private EKYC kyc;
 
     public boolean isSuccess() {
         return success;
@@ -39,7 +41,15 @@ public class KYC {
         this.refCode = refCode;
     }
 
-    class EKYC {
+    public EKYC getKyc() {
+        return kyc;
+    }
+
+    public void setKyc(EKYC kyc) {
+        this.kyc = kyc;
+    }
+
+    public static class EKYC {
         @SerializedName("photo")
         private String imageByteArray;
         @SerializedName("poi")
@@ -71,7 +81,7 @@ public class KYC {
             this.address = address;
         }
 
-        class Personal {
+        public static class Personal {
             @SerializedName("name")
             private String name;
             @SerializedName("dob")
@@ -104,7 +114,7 @@ public class KYC {
             }
         }
 
-        class Address {
+        public static class Address {
             @SerializedName("co")
             private String careOf;
             @SerializedName("street")

@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.jozze.aadhaar_demo.models.KYC;
+
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -32,7 +35,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_home_screen);
         initViews();
-//        setData();
+
+
         onclickListners();
 
     }
@@ -85,6 +89,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         ll_doctor = (LinearLayout) findViewById(R.id.ll_doctor);
         ll_social = (LinearLayout) findViewById(R.id.ll_social);
         ll_me = (LinearLayout) findViewById(R.id.ll_me);
+
+        KYC kyc = new Gson().fromJson(getIntent().getStringExtra("Data"), KYC.class);
+        tv_name.setText(kyc.getKyc().getPersonal().getName());
     }
 
 

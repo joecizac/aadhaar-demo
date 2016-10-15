@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -16,9 +15,6 @@ import com.jozze.aadhaar_demo.utils.LogUtil;
 import com.jozze.aadhaar_demo.utils.NetworkUtil;
 import com.jozze.aadhaar_demo.utils.SnackBarUtil;
 import com.jozze.aadhaar_demo.utils.parser.ParseHelper;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jozze on 8/7/15.
@@ -47,30 +43,87 @@ public class NetworkRequestHelper {
         return mRequest;
     }
 
-    public void getRequest(final String url, final HashMap<String, String> headers, final int classTag) {
-        makeRequest(Request.Method.GET, url, headers, null, classTag);
-    }
+//    public void getRequest(final String url, final HashMap<String, String> headers, final int classTag) {
+//        makeRequest(Request.Method.GET, url, headers, null, classTag);
+//    }
+//
+//    public void postRequest(final String url, final HashMap<String, String> headers,
+//                           final HashMap<String, String> params, final int classTag) {
+//        makeRequest(Request.Method.POST, url, headers, params, classTag);
+//    }
+//
+//    private void makeRequest(final int methodType, final String url,
+//                             final HashMap<String, String> headers, final HashMap<String,
+//                                String> params, final int classTag) {
+//        String formattedUrl = "";
+//        try {
+//            formattedUrl = url.replaceAll(" ", "%20");
+////            formattedUrl = URLEncoder.encode(url, "utf-8");
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        if(NetworkUtil.isConnected(mContext)) {
+//            LogUtil.debug("SERVER URL :: " + formattedUrl);
+//            StringRequest request = new StringRequest(methodType, formattedUrl,
+//                    new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            LogUtil.debug("SERVER RESPONSE :: " + response);
+//                            ParseHelper.getInstance().setCallback(mCallback).parse(response, classTag);
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            if (error != null && error.getMessage() != null) {
+//                                LogUtil.error("SERVER ERROR :: " + error.getMessage());
+//                            }
+//
+//                            String errorMsg = "";
+//                            if(error != null)
+//                                errorMsg = error.getMessage();
+//
+//                            mCallback.onResponseError(errorMsg);
+//                        }
+//                    }) {
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> headerMap = new HashMap<>();
+//
+//                    if(headers != null)
+//                        headerMap.putAll(headers);
+//
+//                    return headerMap;
+//                }
+//
+//                protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+//                    HashMap<String, String> paramMap = new HashMap<>();
+//
+//                    if(params != null)
+//                        paramMap.putAll(params);
+//
+//                    return paramMap;
+//                }
+//            };
+//
+//            request.setTag(url);
+//            request.setRetryPolicy(new DefaultRetryPolicy(AppConstant.REQUEST_TIMEOUT,
+//                    AppConstant.MAX_RETRIES, AppConstant.BACKOFF_MULT));
+//
+//            if(mContext != null)
+//                Volley.newRequestQueue(mContext).add(request);
+//        } else {
+//            SnackBarUtil.shortSnack(((Activity) mContext).getWindow().getDecorView().
+//                    findViewById(android.R.id.content),
+//                    AppConstant.MSG_NO_NETWORK);
+//        }
+//    }
 
-    public void postRequest(final String url, final HashMap<String, String> headers,
-                           final HashMap<String, String> params, final int classTag) {
-        makeRequest(Request.Method.POST, url, headers, params, classTag);
-    }
-
-    private void makeRequest(final int methodType, final String url,
-                             final HashMap<String, String> headers, final HashMap<String,
-                                String> params, final int classTag) {
-        String formattedUrl = "";
-        try {
-            formattedUrl = url.replaceAll(" ", "%20");
-//            formattedUrl = URLEncoder.encode(url, "utf-8");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public void makeRawPostRequest(final String url, final String rawPayload, final int classTag) {
         if(NetworkUtil.isConnected(mContext)) {
-            LogUtil.debug("SERVER URL :: " + formattedUrl);
-            StringRequest request = new StringRequest(methodType, formattedUrl,
+            StringRequest request = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -93,22 +146,13 @@ public class NetworkRequestHelper {
                         }
                     }) {
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headerMap = new HashMap<>();
-
-                    if(headers != null)
-                        headerMap.putAll(headers);
-
-                    return headerMap;
+                public byte[] getBody() throws com.android.volley.AuthFailureError {
+                    return rawPayload.getBytes();
                 }
 
-                protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-                    HashMap<String, String> paramMap = new HashMap<>();
-
-                    if(params != null)
-                        paramMap.putAll(params);
-
-                    return paramMap;
+                public String getBodyContentType() {
+//                    return "application/json; charset=utf-8";
+                    return "text/plain;charset=ISO-8859-1";
                 }
             };
 
@@ -120,7 +164,7 @@ public class NetworkRequestHelper {
                 Volley.newRequestQueue(mContext).add(request);
         } else {
             SnackBarUtil.shortSnack(((Activity) mContext).getWindow().getDecorView().
-                    findViewById(android.R.id.content),
+                            findViewById(android.R.id.content),
                     AppConstant.MSG_NO_NETWORK);
         }
     }
@@ -134,14 +178,5 @@ public class NetworkRequestHelper {
             }
         }
     }
-
-//    public RequestQueue getVolleyRequestQueue() {
-//        if (mRequestQueue == null) {
-//            mRequestQueue = Volley.newRequestQueue
-//                    (this, new OkHttpStack(new OkHttpClient()));
-//        }
-//
-//        return mRequestQueue;
-//    }
 
 }
