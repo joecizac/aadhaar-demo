@@ -11,11 +11,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jozze.aadhaar_demo.AadhaarActivity">
+
     <EditText
         android:id="@+id/aadharEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Aadhaar Number" />
+        android:layout_height="60dp"
+        android:hint="Aadhaar Number"
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/otpEditText"
