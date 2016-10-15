@@ -3,11 +3,15 @@ package com.jozze.aadhaar_demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
+import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.gson.Gson;
 import com.jozze.aadhaar_demo.models.KYC;
 import com.jozze.aadhaar_demo.models.KYCRequest;
@@ -19,11 +23,17 @@ import com.jozze.aadhaar_demo.utils.network.NetworkRequestHelper;
 import com.jozze.aadhaar_demo.utils.network.NetworkResponseCallback;
 import com.jozze.aadhaar_demo.utils.parser.ClassTag;
 
-public class AadhaarActivity extends AppCompatActivity implements NetworkResponseCallback {
+import java.util.List;
+
+import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
+
+public class AadhaarActivity extends AppCompatActivity implements NetworkResponseCallback, BarcodeRetriever {
 
     private EditText aadharEditText;
     private EditText otpEditText;
     private boolean isOTP;
+    private boolean isScan = false;
+    private BarcodeCapture barcodeCapture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,17 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_aadhaar);
+
+        final android.support.v4.app.Fragment scanfragment = getSupportFragmentManager().findFragmentById(R.id.barcode);
+        barcodeCapture = (BarcodeCapture) scanfragment;
+        barcodeCapture.setRetrieval(this);
+//        barcodeCapture.setShowDrawRect(true);
+//        barcodeCapture.setSupportMultipleScan(true);
+//        barcodeCapture.setTouchAsCallback(true);
+//        barcodeCapture.shouldAutoFocus(true);
+//        barcodeCapture.setShouldShowText(true);
+//        barcodeCapture.refresh();
+
         Button submit = (Button) findViewById(R.id.submit);
         otpEditText = (EditText) findViewById(R.id.otpEditText);
         aadharEditText = (EditText) findViewById(R.id.aadharEditText);
@@ -46,6 +67,15 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
                 }
             }
         });
+
+        findViewById(R.id.btn_qr).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.scan_layout).setVisibility(View.VISIBLE);
+                isScan = true;
+            }
+        });
+
     }
 
     private void requestOTP() {
@@ -112,4 +142,43 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
     public void onResponseError(String error) {
         SnackBarUtil.shortSnack(aadharEditText, "some error occurred");
     }
+
+    @Override
+    public void onRetrieved(Barcode barcode) {
+        String data = barcode.displayValue;
+
+        LogUtil.debug("onRetrieved");
+        LogUtil.debug("displayValue : " + barcode.displayValue);
+
+        if(data.contains("PrintLetterBarcodeData uid")) {
+            data = data.substring((data.indexOf("uid=") + 5),
+                    (data.indexOf("uid=") + 17));
+            final String finalData = data;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    aadharEditText.setText(finalData);
+                    findViewById(R.id.scan_layout).setVisibility(View.GONE);
+                    isScan = false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onRetrievedMultiple(Barcode barcode, List<BarcodeGraphic> list) {
+        LogUtil.debug("onRetrievedMultiple");
+    }
+
+    @Override
+    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
+        LogUtil.debug("onBitmapScanned");
+    }
+
+    @Override
+    public void onRetrievedFailed(String s) {
+        LogUtil.debug("onRetrievedFailed");
+        SnackBarUtil.shortSnack(aadharEditText, "error reading QR");
+    }
+
 }
