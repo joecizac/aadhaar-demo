@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".HomeScreenActivity"></activity>
+        <activity android:name=".HomeScreenActivity" />
+        <activity android:name=".AadhaarActivity"></activity>
     </application>
 
 </manifest>

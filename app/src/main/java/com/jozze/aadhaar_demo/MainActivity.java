@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         activity_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,HomeScreenActivity.class);
+                Intent intent=new Intent(MainActivity.this,AadhaarActivity.class);
                 startActivity(intent);
                 finish();
             }
