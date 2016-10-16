@@ -34,6 +34,7 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
     private boolean isOTP;
     private boolean isScan = false;
     private BarcodeCapture barcodeCapture;
+    private EditText pincodeEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
 
         Button submit = (Button) findViewById(R.id.submit);
         otpEditText = (EditText) findViewById(R.id.otpEditText);
+        pincodeEditText = (EditText) findViewById(R.id.pincodeEditText);
         aadharEditText = (EditText) findViewById(R.id.aadharEditText);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +106,7 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
 
         KYCRequest.Request.Location location = new KYCRequest.Request.Location();
         location.setType("pincode");
-        location.setPincode("423703");
+        location.setPincode(pincodeEditText.getText().toString());
 
         kycRequest.setLocation(location);
         request.setRequest(kycRequest);
@@ -118,6 +120,7 @@ public class AadhaarActivity extends AppCompatActivity implements NetworkRespons
         switch (tag) {
             case ClassTag.TAG_OTP:
                 otpEditText.setVisibility(View.VISIBLE);
+                pincodeEditText.setVisibility(View.VISIBLE);
                 OTP otp = (OTP) obj;
                 LogUtil.debug("" + otp.getRefCode());
                 LogUtil.debug("" + otp.isSuccess());
